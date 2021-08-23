@@ -84,6 +84,8 @@ img {
 }
 
 .result-block {
+  display: flex;
+  justify-content: center;
   min-height: 40vh;
   background-color: #66443b;
   position: relative;
@@ -94,11 +96,36 @@ img {
   bottom: 0;
   left: 10px;
   color: #ffffff;
+  text-decoration: none;
+}
+
+.the-result {
+  /* text-align: center; */
+  color: #ffffff;
+  margin-top: 10px;
+}
+
+.loader-container {
+  height: fit-content;
+  width: fit-content;
+  margin: 0;
+  padding: 0;
+}
+
+.loader {
+  margin-top: 50px;
 }
 
 a {
   text-decoration: none;
 }
+
+#author {
+  text-decoration: underline;
+  color: #ffffff;
+}
+
+
 
 #analyse-button {
   width: 200px;
