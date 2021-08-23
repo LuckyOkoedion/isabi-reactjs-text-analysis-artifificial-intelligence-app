@@ -1,4 +1,5 @@
 import React, { FormEvent } from "react";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import axios from "axios";
 
 import {
@@ -15,6 +16,11 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
 import "./App.css";
+import {
+  DetectedLanguage,
+  DocumentSentiment,
+  TextSentimentEnum,
+} from "./interfaces";
 
 const customUI = createTheme({
   palette: {
@@ -28,19 +34,26 @@ const customUI = createTheme({
 });
 
 type MyProps = {};
-type MyState = { inputText: string; analysisResult: any };
+type MyState = {
+  inputText: string;
+  analysisResult: DocumentSentiment | null;
+  dataLoading: boolean;
+};
 
 class App extends React.Component<MyProps, MyState> {
   year = new Date().getFullYear();
 
   constructor(props: any) {
     super(props);
-    this.state = { inputText: "", analysisResult: {} };
+    this.state = { inputText: "", analysisResult: null, dataLoading: false };
     this.submitToAnalyze = this.submitToAnalyze.bind(this);
     this.analyze = this.analyze.bind(this);
   }
 
   submitToAnalyze(event: FormEvent) {
+    this.setState((state, props) => {
+      return { dataLoading: true };
+    });
     this.analyze(this.state.inputText);
     event.preventDefault();
   }
@@ -52,7 +65,55 @@ class App extends React.Component<MyProps, MyState> {
   }
 
   analyze(data: string) {
-    console.log(data);
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    try {
+      axios
+        .post<DetectedLanguage>(
+          "http://isabi-text-analysis-rest-api.azurewebsites.net/api/LanguageDetection",
+          { text: data },
+          { headers }
+        )
+        .then((value) => {
+          const theValue = value.data;
+
+          if (typeof theValue !== "undefined") {
+            try {
+              axios
+                .post<DocumentSentiment>(
+                  "http://isabi-text-analysis-rest-api.azurewebsites.net/api/OpinionMining",
+                  {
+                    text: data,
+                    language: theValue.iso6391Name,
+                  },
+                  { headers }
+                )
+                .then((resp) => {
+                  const theResponse = resp.data;
+                  if (typeof theResponse !== "undefined") {
+                    this.setState((state, props) => {
+                      return {
+                        analysisResult: theResponse,
+                      };
+                    });
+
+                    this.setState((state, props) => {
+                      return {
+                        dataLoading: false,
+                      };
+                    });
+                  }
+                });
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   render() {
@@ -115,23 +176,88 @@ class App extends React.Component<MyProps, MyState> {
             </div>
 
             <div>
-              <Button
-                type="submit"
-                id="analyse-button"
-                style={{ marginBottom: 20 }}
-                className="action-button"
-                variant="contained"
-                color="primary"
-                disabled={this.state.inputText == ""}
-              >
-                Analyze
-              </Button>
+              <a href="#seeResult">
+                <Button
+                  type="submit"
+                  id="analyse-button"
+                  style={{ marginBottom: 20 }}
+                  className="action-button"
+                  variant="contained"
+                  color="primary"
+                  disabled={this.state.inputText === ""}
+                >
+                  Analyze
+                </Button>
+              </a>
             </div>
           </form>
 
           <div className="result-block">
+            {this.state.analysisResult !== null ? (
+              <div className="the-result">
+                <p>
+                  Overall, the opinion sentiment in the text is{" "}
+                  {this.state.analysisResult.confidenceScores.positive * 100}{" "}
+                  percent positive,{" "}
+                  {this.state.analysisResult.confidenceScores.negative * 100}{" "}
+                  percent negative, and{" "}
+                  {this.state.analysisResult.confidenceScores.neutral} percent
+                  neutral.
+                </p>
+                <p>
+                  <strong>DETAILS:</strong>
+                </p>
+                {this.state.analysisResult.sentences.map((sentenceSentiment) =>
+                  sentenceSentiment.opinions.map((opinion, index) => (
+                    <p key={index}>
+                      <span>
+                        The author is{" "}
+                        {TextSentimentEnum[opinion.target.sentiment]} about the{" "}
+                        {opinion.target.text}. The author considers the{" "}
+                        {opinion.target.text} to be{" "}
+                      </span>
+
+                      {opinion.assessments.map((assessment, index) => (
+                        <span key={index}>
+                          "{assessment.text}" (a{" "}
+                          {TextSentimentEnum[assessment.sentiment]} assessment),
+                          ....
+                        </span>
+                      ))}
+                    </p>
+                  ))
+                )}
+              </div>
+            ) : (
+              <div className="the-result">
+                {this.state.dataLoading ? (
+                  <div>Analysizing text please wait...</div>
+                ) : (
+                  <div>RESULT WILL SHOW HERE</div>
+                )}
+              </div>
+            )}
+            {this.state.dataLoading ? (
+              <div className="loader-container">
+                <CircularProgress
+                  id="seeResult"
+                  className="loader"
+                  color="secondary"
+                />
+              </div>
+            ) : (
+              ""
+            )}
             <p className="copyright">
-              &copy; {this.year}, Luckylead IT Solutions Ltd
+              &copy; {this.year},{" "}
+              <span>
+                <a
+                  id="author"
+                  href="https://www.linkedin.com/in/lucky-okoedion-28b7286a/"
+                >
+                  Lucky Okoedion
+                </a>
+              </span>
             </p>
           </div>
         </ThemeProvider>
