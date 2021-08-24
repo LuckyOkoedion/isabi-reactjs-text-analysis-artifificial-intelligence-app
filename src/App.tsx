@@ -72,7 +72,7 @@ class App extends React.Component<MyProps, MyState> {
     try {
       axios
         .post<DetectedLanguage>(
-          "http://isabi-text-analysis-rest-api.azurewebsites.net/api/LanguageDetection",
+          "https://isabi-text-analysis-rest-api.azurewebsites.net/api/LanguageDetection",
           { text: data },
           { headers }
         )
@@ -83,7 +83,7 @@ class App extends React.Component<MyProps, MyState> {
             try {
               axios
                 .post<DocumentSentiment>(
-                  "http://isabi-text-analysis-rest-api.azurewebsites.net/api/OpinionMining",
+                  "https://isabi-text-analysis-rest-api.azurewebsites.net/api/OpinionMining",
                   {
                     text: data,
                     language: theValue.iso6391Name,
