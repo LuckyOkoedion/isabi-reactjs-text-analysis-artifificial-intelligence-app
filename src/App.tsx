@@ -239,16 +239,12 @@ class App extends React.Component<MyProps, MyState> {
             )}
             {this.state.dataLoading ? (
               <div className="loader-container">
-                <CircularProgress
-                  id="seeResult"
-                  className="loader"
-                  color="secondary"
-                />
+                <CircularProgress className="loader" color="secondary" />
               </div>
             ) : (
               ""
             )}
-            <p className="copyright">
+            <p className="copyright" id="seeResult">
               &copy; {this.year},{" "}
               <span>
                 <a
