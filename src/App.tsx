@@ -66,16 +66,15 @@ class App extends React.Component<MyProps, MyState> {
 
   analyze(data: string) {
     const headers = {
-      "Content-Type": "application/json",
+      "Content-Type": "text/plain",
     };
 
     try {
       axios
         .post<DetectedLanguage>(
           "https://isabi-text-analysis-rest-api.azurewebsites.net/api/LanguageDetection",
-          { text: data }
-          // ,
-          // { headers }
+          { text: data },
+          { headers }
         )
         .then((value) => {
           const theValue = value.data;
@@ -88,9 +87,8 @@ class App extends React.Component<MyProps, MyState> {
                   {
                     text: data,
                     language: theValue.iso6391Name,
-                  }
-                  // ,
-                  // { headers }
+                  },
+                  { headers }
                 )
                 .then((resp) => {
                   const theResponse = resp.data;
