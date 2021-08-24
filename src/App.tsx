@@ -213,8 +213,8 @@ class App extends React.Component<MyProps, MyState> {
                       <span>
                         The author is{" "}
                         {TextSentimentEnum[opinion.target.sentiment]} about the{" "}
-                        {opinion.target.text}. The author considers the{" "}
-                        {opinion.target.text} to be{" "}
+                        "{opinion.target.text}". The author considers the "
+                        {opinion.target.text}" to be{" "}
                       </span>
 
                       {opinion.assessments.map((assessment, index) => (
