@@ -233,7 +233,7 @@ class App extends React.Component<MyProps, MyState> {
                 {this.state.dataLoading ? (
                   <div>Analysizing text please wait...</div>
                 ) : (
-                  <div>RESULT WILL SHOW HERE</div>
+                  <div>ANALYSIS RESULT WILL SHOW HERE</div>
                 )}
               </div>
             )}
