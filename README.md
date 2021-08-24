@@ -1,3 +1,3 @@
-# isabi-reactjs-text-analysis-artifificial-intelligence-app
+# Demo Link
 
-This is the React js frontend for the ISABI Text Analysis Artificial Intelligence application I built to consume the Azure text analysis A.I. cloud service.
+[Click here to see the app](https://isabi-text-analyzer.azurewebsites.net)
