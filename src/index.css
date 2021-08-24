@@ -85,6 +85,7 @@ img {
 
 .result-block {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   min-height: 40vh;
   background-color: #66443b;
@@ -124,8 +125,6 @@ a {
   text-decoration: underline;
   color: #ffffff;
 }
-
-
 
 #analyse-button {
   width: 200px;
