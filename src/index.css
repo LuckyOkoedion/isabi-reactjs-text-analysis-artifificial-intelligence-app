@@ -89,13 +89,10 @@ img {
   justify-content: center;
   min-height: 40vh;
   background-color: #66443b;
-  position: relative;
 }
 
 .copyright {
-  position: absolute;
   padding-top: 100px;
-  bottom: 0;
   left: 10px;
   color: #ffffff;
   text-decoration: none;
