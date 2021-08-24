@@ -244,6 +244,7 @@ class App extends React.Component<MyProps, MyState> {
             ) : (
               ""
             )}
+            <div className="push"></div>
             <p className="copyright" id="seeResult">
               &copy; {this.year},{" "}
               <span>

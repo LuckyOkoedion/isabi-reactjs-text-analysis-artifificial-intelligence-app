@@ -89,10 +89,16 @@ img {
   justify-content: center;
   min-height: 40vh;
   background-color: #66443b;
+  position: relative;
+}
+
+.push {
+  height: 50px;
 }
 
 .copyright {
-  padding-top: 100px;
+  position: absolute;
+  bottom: 0;
   left: 10px;
   color: #ffffff;
   text-decoration: none;
