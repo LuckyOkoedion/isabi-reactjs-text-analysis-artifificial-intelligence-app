@@ -66,7 +66,7 @@ class App extends React.Component<MyProps, MyState> {
 
   analyze(data: string) {
     const headers = {
-      "Content-Type": "text/plain",
+      "Content-Type": "application/json",
     };
 
     try {
