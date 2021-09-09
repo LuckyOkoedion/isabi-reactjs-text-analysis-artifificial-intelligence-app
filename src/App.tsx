@@ -197,11 +197,11 @@ class App extends React.Component<MyProps, MyState> {
               <div className="the-result">
                 <p>
                   Overall, the opinion sentiment in the text is{" "}
-                  {this.state.analysisResult.confidenceScores.positive * 100}{" "}
+                  { Math.round(this.state.analysisResult.confidenceScores.positive * 100)}{" "}
                   percent positive,{" "}
-                  {this.state.analysisResult.confidenceScores.negative * 100}{" "}
+                  { Math.round(this.state.analysisResult.confidenceScores.negative * 100)}{" "}
                   percent negative, and{" "}
-                  {this.state.analysisResult.confidenceScores.neutral} percent
+                  { Math.round(this.state.analysisResult.confidenceScores.neutral * 100)} percent
                   neutral.
                 </p>
                 <p>
